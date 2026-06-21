@@ -1,5 +1,6 @@
 import pandas as pd
 from pathlib import Path
+from sqlalchemy import text
 
 from load.db_connection import get_engine
 
@@ -23,6 +24,13 @@ def load_table(file_name, table_name):
 
     engine = get_engine()
 
+    # Purana data hatao
+    with engine.begin() as conn:
+        conn.execute(
+            text(f"TRUNCATE TABLE staging.{table_name} CASCADE")
+        )
+
+    # Naya data load karo
     df.to_sql(
         name=table_name,
         con=engine,

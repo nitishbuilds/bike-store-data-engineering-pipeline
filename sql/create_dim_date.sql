@@ -1,10 +1,9 @@
 CREATE TABLE IF NOT EXISTS warehouse.dim_date (
-    date_key INT PRIMARY KEY,
-    full_date DATE UNIQUE,
-    year INT,
-    quarter INT,
-    month INT,
+    date_id DATE PRIMARY KEY,
+    year INTEGER,
+    quarter INTEGER,
+    month INTEGER,
     month_name VARCHAR(20),
-    day INT,
+    day INTEGER,
     day_name VARCHAR(20)
 );

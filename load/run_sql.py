@@ -22,4 +22,7 @@ if __name__ == "__main__":
 
     execute_sql_file("sql/create_warehouse_schema.sql")
     execute_sql_file("sql/create_warehouse_tables.sql")
+
     execute_sql_file("sql/create_dim_date.sql")
+
+    execute_sql_file("sql/create_fact_inventory.sql")
