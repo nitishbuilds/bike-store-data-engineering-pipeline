@@ -1,10 +1,7 @@
-import pandas as pd
-from pathlib import Path
 from sqlalchemy import text
 
 from load.db_connection import get_engine
-
-RAW_DATA_PATH = Path("data/raw")
+from storage.s3_storage import load_csv
 
 TABLE_MAPPING = {
     "brands.csv": "stg_brands",
@@ -20,17 +17,18 @@ TABLE_MAPPING = {
 
 
 def load_table(file_name, table_name):
-    df = pd.read_csv(RAW_DATA_PATH / file_name)
+    # Read directly from AWS S3
+    df = load_csv(file_name)
 
     engine = get_engine()
 
-    # Purana data hatao
+    # Clear existing data
     with engine.begin() as conn:
         conn.execute(
             text(f"TRUNCATE TABLE staging.{table_name} CASCADE")
         )
 
-    # Naya data load karo
+    # Load fresh data
     df.to_sql(
         name=table_name,
         con=engine,
@@ -39,7 +37,7 @@ def load_table(file_name, table_name):
         index=False
     )
 
-    print(f"Loaded {file_name} -> staging.{table_name}")
+    print(f"Loaded {file_name} from S3 -> staging.{table_name}")
 
 
 if __name__ == "__main__":

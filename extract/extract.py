@@ -1,12 +1,4 @@
-import pandas as pd
-from pathlib import Path
-
-RAW_DATA_PATH = Path("data/raw")
-
-
-def load_csv(filename):
-    file_path = RAW_DATA_PATH / filename
-    return pd.read_csv(file_path)
+from storage.s3_storage import load_csv
 
 
 def load_all_tables():
